@@ -32,8 +32,7 @@ CREATE TABLE orders
     customer_id INT,
     channel TEXT,
     PRIMARY KEY (order_id, product_id),
-    FOREIGN KEY (product_id) REFERENCES products_n_prices
-    
+    FOREIGN KEY (product_id) REFERENCES products_n_prices (product_id)
 );
 
 -- Create indexes on foreign key columns for better performance
