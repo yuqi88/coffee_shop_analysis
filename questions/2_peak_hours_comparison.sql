@@ -265,5 +265,71 @@ ORDER BY aov DESC;
 
 /*
     Q2s4: Which peak is most delivery-heavy vs in-person?
+    - count delivery & count in-person -> orders table
+        - values under channel: in-person, store-app, uber, doordash.
+            - non-delivery: in-person + store-app
+            - delivery: uber + doordash
+        - count the channel from distinct order_ids -> do avg since # of wkd and wky is different.
+    - peak: phd.day_type + phd.hours
 
 */
+SELECT *
+FROM orders
+LIMIT 10;
+
+-- in-person count
+WITH no_dups_orders AS ( --remove all duplicated order_id rows, and then cte for orders.channel
+    SELECT 
+        DISTINCT order_id, 
+        ordered_at,
+        channel
+    FROM orders
+) SELECT 
+    phd.day_type,
+    phd.hr,
+    COUNT(ndo.channel) AS inperson_count_per_peak
+FROM no_dups_orders ndo
+JOIN date_dim dd
+    ON ndo.ordered_at::DATE = dd.cal_date
+JOIN peak_hour_dim phd
+    ON EXTRACT(HOUR FROM ndo.ordered_at) = phd.hr AND dd.day_type = phd.day_type
+WHERE ndo.channel = 'in-person'
+GROUP BY
+    phd.day_type,
+    phd.hr
+;
+
+-- group by all types of channels: in-person vs uber vs doordash (use case, end  -> delivery)
+WITH no_dups_orders AS ( 
+    SELECT 
+        DISTINCT order_id, 
+        ordered_at,
+        channel,
+        CASE
+            WHEN channel IN ('doordash', 'uber') THEN 'delivery'
+            ELSE 'non-delivery'
+        END AS channels_2
+    FROM orders
+) SELECT 
+    phd.day_type,
+    phd.hr,
+    ndo.channels_2,
+    ROUND(COUNT(ndo.channels_2)*1.0/COUNT(DISTINCT ndo.ordered_at::DATE), 2) AS channels_count_per_peak
+FROM no_dups_orders ndo
+JOIN date_dim dd
+    ON ndo.ordered_at::DATE = dd.cal_date
+JOIN peak_hour_dim phd
+    ON EXTRACT(HOUR FROM ndo.ordered_at) = phd.hr AND dd.day_type = phd.day_type
+GROUP BY
+    ndo.channels_2,
+    phd.day_type,
+    phd.hr
+ORDER BY 
+    channels_2, 
+    channels_count_per_peak DESC
+;
+-- number of in-peson & delivery both hit the highest during the weekend. 
+-- With delivery peaking at 11 am, and non-delivery(in-person & store-app) at 10 am.
+
+-- learning 1: do checking for data miss matches: in the same order_id, not the same ordered_at or the same channel.
+-- learning 2: instead of using distinct order_id, take min(ordered_at), min(channel)
