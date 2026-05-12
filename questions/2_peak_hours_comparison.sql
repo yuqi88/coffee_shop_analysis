@@ -272,6 +272,13 @@ ORDER BY aov DESC;
         - count the channel from distinct order_ids -> do avg since # of wkd and wky is different.
     - peak: phd.day_type + phd.hours
 
+    Q2s4-1: “Which peak has the most delivery orders vs the most in-person orders?” -> count
+    Q2s4-2: “Which peak is mostly dominated by delivery vs in-person?” -> ratio
+
+    They answer different business questions:
+    -> Ops staffing → volume
+    -> Channel strategy → ratio
+
 */
 SELECT *
 FROM orders
@@ -333,3 +340,126 @@ ORDER BY
 
 -- learning 1: do checking for data miss matches: in the same order_id, not the same ordered_at or the same channel.
 -- learning 2: instead of using distinct order_id, take min(ordered_at), min(channel)
+
+
+-- Q2s4-2
+WITH no_dups_orders AS ( 
+    SELECT 
+        order_id, 
+        MIN(ordered_at) AS ordered_at,
+        CASE
+            WHEN MIN(channel) IN ('doordash', 'uber') THEN 'delivery'
+            ELSE 'non-delivery'
+        END AS channels_2
+    FROM orders
+    GROUP BY order_id
+) 
+SELECT 
+    phd.day_type,
+    phd.hr,
+    ROUND(
+        SUM(CASE WHEN ndo.channels_2 = 'delivery' THEN 1 ELSE 0 END) * 1.0 
+        / COUNT(*), 
+    2) * 100 || '%' AS delivery_ratio_at_peaks
+FROM no_dups_orders ndo
+JOIN date_dim dd
+    ON ndo.ordered_at::DATE = dd.cal_date
+JOIN peak_hour_dim phd
+    ON EXTRACT(HOUR FROM ndo.ordered_at) = phd.hr AND dd.day_type = phd.day_type
+GROUP BY
+    phd.day_type,
+    phd.hr
+ORDER BY 
+    phd.day_type, 
+    phd.hr 
+;
+-- heavy during lunch
+
+
+/*
+    Q2s5: Which peak has the most food add-ons (upsell potential)?
+    - looking for ratio since volume of orders in each peak is different.
+        - Sum(orders of <food + drink>)/Count(#orders)
+    - assuming we are looking for food adding on the drink orders, not the otherway around. Cuz ppl usually get coffee at a coffee shop.
+
+    Get orders during peak -> order table, peak table
+    cross product_id  -> products_n_prices table has food or drink info
+
+    
+
+*/
+SELECT 
+    dd.day_type,
+    EXTRACT(HOUR FROM o.ordered_at) AS hr,
+    -- if in the same order_id && there exist food_id & drink_id, then count++
+    ROUND(
+        SUM(CASE 
+                WHEN pp.drink_id IS NOT NULL and pp.food_id IS NOT NULL THEN 1
+                ELSE 0
+            END
+        ) * 1.0, -- divid by peak (cant group by order_id + peak)
+        2
+    ) AS upsell_ratio_at_peaks
+FROM orders o
+JOIN date_dim dd
+    ON o.ordered_at::DATE = dd.cal_date
+JOIN products_n_prices pp
+    ON o.product_id = pp.product_id
+WHERE
+    -- get only from the peak hours
+    (dd.day_type = 'Weekday' AND EXTRACT(HOUR FROM ordered_at) IN (8,9,11,12,16,17)) OR
+    (dd.day_type = 'Weekend' AND EXTRACT(HOUR FROM ordered_at) IN (10,11,14,15)) 
+GROUP BY o.order_id
+;
+
+SELECT 
+    CASE
+        WHEN '123' <>'' and 'abc' <> '' THEN 1
+        ELSE 0
+    END AS col1;
+
+
+WITH labelled_orders AS (
+    SELECT 
+        o.order_id,
+        BOOL_OR(
+            CASE
+                WHEN pp.drink_id IS NOT NULL THEN TRUE
+                ELSE FALSE
+            END
+        ) AS has_drink,
+        BOOL_OR(
+            CASE
+                WHEN pp.food_id IS NOT NULL THEN TRUE
+                ELSE FALSE
+            END
+        ) AS has_food
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    GROUP BY o.order_id
+    LIMIT 50
+    -- HAVING
+    --     num_nulls(p.drink_id , p.food_id) = 0 -- has both drink & food
+) SELECT
+    phd.day_type,
+    phd.hr,
+    ROUND(
+        COUNT(DISTINCT o.order_id) FILTER (WHERE lo.has_drink AND lo.has_food) *1.0 
+        /
+        COUNT(DISTINCT o.order_id) FILTER (WHERE lo.has_drink),
+        2
+    ) AS upsell_ratio_at_peaks
+    
+    -- ratio: COUNT(combo_order) *1.0/ COUNT(DISTINCT order_id)AS upsell_ratio_at_peaks
+FROM orders o
+JOIN labelled_orders lo
+    ON o.order_id = lo.order_id
+JOIN date_dim dd
+    ON o.ordered_at::DATE = dd.cal_date
+JOIN peak_hour_dim phd
+    ON EXTRACT(HOUR FROM o.ordered_at) = phd.hr AND dd.day_type = phd.day_type
+GROUP BY
+    phd.day_type,
+    phd.hr
+;
+-- weekend 2 pm has the most combo orders, lunch time on the weekdays has the lest.
