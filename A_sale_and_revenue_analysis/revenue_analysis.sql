@@ -15,7 +15,6 @@ Revenue by channel
 */
 
 -- Q1-1: feb total sales revenue: $159,301.80
-
 /*
     - orders table, prices_n_products
 */
@@ -37,3 +36,55 @@ FROM orders o
 JOIN products_n_prices pp ON o.product_id = pp.product_id
 GROUP BY week
 ORDER BY week;
+
+-- Q1-3: Peak vs non-peak sales (part of KPI analysis)
+/*
+    - i choose revenue per hour
+    - orders, products_n_prices
+    - add peak or non-peak behind each orders
+
+    | Period   | Revenue | Hours | Revenue/Hour |
+    | -------- | ------- | ----- | ------------ |   
+    | Peak     | 12000   | 20    | 600          |
+    | Non-peak | 8000    | 60    | 133          |
+*/
+
+WITH orders_rev AS(
+    SELECT
+        o.order_id,
+        o.ordered_at,
+        (o.quantity * pp.price) AS bill
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+), 
+orders_labeled AS (
+    SELECT 
+        odr.order_id,
+        odr.bill,
+        CASE 
+            WHEN peak_id IS NULL THEN 'non-peak'
+            ELSE 'peak'
+        END AS period
+    FROM orders_rev odr
+    JOIN date_dim dd
+        ON odr.ordered_at::Date = dd.cal_date
+    LEFT JOIN peak_hour_dim phd
+        ON phd.day_type = dd.day_type AND phd.hr = EXTRACT(HOUR FROM odr.ordered_at)
+), 
+total_hrs AS (
+     SELECT
+        orl.period,
+        SUM(orl.bill) AS revenue,
+        CASE 
+            WHEN period = 'peak' THEN 10
+            ELSE 7*12-10
+        END AS hr
+    FROM orders_labeled orl
+    GROUP BY period
+)
+SELECT
+    total_hrs.period,
+    total_hrs.revenue,
+    total_hrs.hr,
+    ROUND(revenue*1.0/hr, 2)  AS rev_per_hr
+FROM total_hrs;
