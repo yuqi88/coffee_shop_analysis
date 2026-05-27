@@ -88,3 +88,31 @@ SELECT
     total_hrs.hr,
     ROUND(revenue*1.0/hr, 2)  AS rev_per_hr
 FROM total_hrs;
+
+-- Q1-3: Which products generate the highest revenue?
+/*
+    - products_n_prices, orders
+    1. sum the revenue of all products accross Feb
+    2. order by
+    - product_id, product name, revenue it contributed
+*/
+
+SELECT 
+    pp.product_id,
+    pp.name,
+    SUM(o.quantity * pp.price) AS rev_in_feb
+FROM orders o
+JOIN products_n_prices pp ON o.product_id = pp.product_id
+GROUP BY pp.product_id, pp.name
+ORDER BY rev_in_feb DESC;
+
+-- after plotting: top 14 contribute to majority of the revenue.
+SELECT 
+    pp.product_id,
+    pp.name,
+    SUM(o.quantity * pp.price) AS rev_in_feb
+FROM orders o
+JOIN products_n_prices pp ON o.product_id = pp.product_id
+GROUP BY pp.product_id, pp.name
+ORDER BY rev_in_feb DESC
+LIMIT 14; -- add limit 14 to see only the top contributors.
