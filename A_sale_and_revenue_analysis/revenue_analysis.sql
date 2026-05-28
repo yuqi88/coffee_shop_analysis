@@ -10,8 +10,6 @@
         - Which products categories generate the highest revenue?
     Q4: Revenue by product and traffic
         - Which products sell often but generate low revenue?
-
-Revenue by channel
 */
 
 -- Q1-1: feb total sales revenue: $159,301.80
@@ -224,9 +222,32 @@ JOIN revenue_per_product rpp ON o.product_id = rpp.product_id
 
 -- Q4: Which products sell often but generate low revenue?
 /*
-    - what categories?
-        - hot vs iced
-        - coffee vs non-coffee
-        - food vs drinks
-        - drink flavor regardless of hot or cold or size
+    - how do i represent this? Scatter plot: x-axis = frequency; y-axis = revenue
+    - frequency: orders.quanitity
+    - revenue: quanitiy * price -> pp
 */
+SELECT
+    o.product_id,
+    pp.name,
+    ROUND(
+        SUM(o.quantity)*100.0/(SELECT SUM(quantity) FROM orders),
+        2
+    ) AS frequency_p,
+    ROUND(
+        SUM(o.quantity * pp.price)*100.0/
+            (SELECT SUM(o.quantity * pp.price) FROM orders o JOIN products_n_prices pp ON o.product_id = pp.product_id),
+        2
+    ) AS rev_p
+FROM orders o
+JOIN products_n_prices pp ON o.product_id = pp.product_id
+GROUP BY 
+    o.product_id,
+    pp.name
+ORDER BY 
+    frequency_p DESC,
+    rev_p DESC;
+
+SELECT
+
+FROM orders o
+JOIN products_n_prices pp ON o.product_id = pp.product_id
