@@ -7,7 +7,7 @@
     Q2: Revenue by product
         - Which products generate the highest revenue?
     Q3: Revenue by product category
-        - Which categories sell the most?
+        - Which products categories generate the highest revenue?
     Q4: Revenue by product and traffic
         - Which products sell often but generate low revenue?
 
@@ -89,7 +89,7 @@ SELECT
     ROUND(revenue*1.0/hr, 2)  AS rev_per_hr
 FROM total_hrs;
 
--- Q1-3: Which products generate the highest revenue?
+-- Q2-1: Which products generate the highest revenue?
 /*
     - products_n_prices, orders
     1. sum the revenue of all products accross Feb
@@ -116,3 +116,117 @@ JOIN products_n_prices pp ON o.product_id = pp.product_id
 GROUP BY pp.product_id, pp.name
 ORDER BY rev_in_feb DESC
 LIMIT 14; -- add limit 14 to see only the top contributors.
+
+-- Q3: Which product categories generate the highest revenue?
+/*
+    - what categories?
+        - hot vs iced
+        - coffee vs non-coffee
+        - food vs drinks
+        - drink flavor regardless of hot or cold or size
+*/
+-- hot vs iced?
+WITH revenue_per_product AS (
+    SELECT
+        pp.product_id,
+        pp.name,
+        SUM(o.quantity *pp.price) AS rev
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    WHERE pp.drink_id IS NOT NULL
+    GROUP BY 
+        pp.product_id,
+        pp.name
+),
+labeled_drinks AS (
+    SELECT 
+        rpp.product_id,
+        rpp.name,
+        rpp.rev,
+        CASE
+            WHEN rpp.name LIKE 'Iced%'
+                OR rpp.name LIKE 'Cold%'
+                OR rpp.name LIKE '%Lemonade%'
+            THEN 'Cold'
+            ELSE 'Hot' 
+        END AS category
+    FROM revenue_per_product rpp
+)
+SELECT 
+    ld.category,
+    SUM(ld.rev) AS category_rev
+FROM labeled_drinks ld
+GROUP BY ld.category
+ORDER BY category_rev DESC;
+
+-- coffee vs non-coffee?
+WITH labeled_drinks AS (
+    SELECT 
+        pp.product_id,
+        pp.price,
+        CASE
+            WHEN dt.caffeine_level = 'Caffeinated'THEN 'Coffee'
+            ELSE 'Non-Coffee' 
+        END AS category
+    FROM products_n_prices pp
+    JOIN drink_types dt ON pp.drink_id = dt.drink_id
+    WHERE pp.drink_id IS NOT NULL
+)
+SELECT
+    ld.category,
+    SUM(o.quantity * ld.price) AS category_rev
+FROM orders o
+JOIN labeled_drinks ld ON o.product_id = ld.product_id
+GROUP BY ld.category 
+ORDER BY category_rev DESC;
+
+-- drink flavor regardless of hot or cold or size
+WITH revenue_per_drink_type AS (
+    SELECT
+        pp.drink_id,
+        SUM(o.quantity *pp.price) AS rev
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    WHERE pp.drink_id IS NOT NULL
+    GROUP BY 
+        pp.drink_id
+    ORDER BY pp.drink_id
+)
+SELECT
+    dt.drink_id,
+    dt.name, 
+    rpdt.rev
+FROM revenue_per_drink_type rpdt
+JOIN drink_types dt ON rpdt.drink_id = dt.drink_id
+ORDER BY rpdt.rev DESC;
+
+-- food vs drinks?
+WITH revenue_per_product AS (
+    SELECT
+        -- pp.product_id,
+        CASE
+            WHEN pp.drink_id IS NOT NULL THEN 'drink'
+            ELSE 'food'
+        END AS category,
+        SUM (o.quantity * pp.price) AS rev
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    -- GROUP BY pp.product_id
+    GROUP BY category
+)
+SELECT
+    CASE
+        WHEN pp.drink_id IS NOT NULL THEN 'drink'
+        ELSE 'food'
+    END AS category
+FROM orders o
+JOIN revenue_per_product rpp ON o.product_id = rpp.product_id
+
+-- Q4: Which products sell often but generate low revenue?
+/*
+    - what categories?
+        - hot vs iced
+        - coffee vs non-coffee
+        - food vs drinks
+        - drink flavor regardless of hot or cold or size
+*/
