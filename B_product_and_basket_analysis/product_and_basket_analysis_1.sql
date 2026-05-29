@@ -1,3 +1,17 @@
+/*
+1. Sales & Revenue Patterns
+        ↓
+2. Customer Basket Behavior
+        ↓
+3. Customer Segmentation
+        ↓
+4. Product Performance
+        ↓
+5. Add-on / Basket Relationships
+        ↓
+6. Strategic Recommendations
+
+--------------
 Product analysis/Market Basket Analysis
 - Which product categories sell the most?
 
