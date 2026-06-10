@@ -65,6 +65,7 @@ ORDER BY hr;
 
 -- Q2-2: Which channel performs best during peak hours? 
 /*
+    - traffic
     - uber vs doordash vs in-person vs store-app
 
 

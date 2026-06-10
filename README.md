@@ -57,8 +57,23 @@ These 11 products collectively account for approximately 78% of total revenue, d
 Beyond the top group, remaining products contribute less than 2% each individually, forming a classic long-tail distribution. While individual tail products have a low relative impact, they collectively contribute nearly a quarter of total revenue, showing that menu variety plays a crucial role in supporting our core daily drivers.
 
 ### 1.3 Channel / Category Performance
+#### 1.3.1 Revenue Contribution by Channel Category
+To understand how customers access the business, revenue was analyzed across delivery and non-delivery channels.
 
+| Channel Category | Revenue | Revenue Share |
+| ---------------- | ------: | ------------: |
+| Non-Delivery     | $89,787 |         56.4% |
+| Delivery         | $69,515 |         43.6% |
 
+While non-delivery transactions remain the primary revenue source, delivery channels contribute a substantial portion of total revenue, accounting for nearly 44% of sales.
+
+This indicates that revenue generation is not solely dependent on in-store traffic. Delivery platforms represent an important sales channel and significantly expand customer reach beyond physical store visits.
+#### 1.3.2 Channel Preference by Time of Day
+Channel usage varies significantly throughout the day. During morning hours (7 AM–10 AM), non-delivery purchases account for approximately two-thirds of transactions, indicating that customers primarily visit the store or use store pickup services.
+
+In contrast, delivery channels become the dominant purchasing method during midday hours. Between 11 AM and 1 PM, delivery transactions account for approximately 68%–76% of orders, suggesting that customers increasingly rely on delivery services during lunch periods.
+
+This shift highlights distinct customer purchasing behaviors throughout the day, with in-store demand concentrated during morning beverage purchases and delivery demand peaking around lunchtime.
 ### 1.4 Key Findings
 
 ## 2. Market Basket Analysis

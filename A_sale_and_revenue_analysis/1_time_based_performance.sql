@@ -224,3 +224,8 @@ WITH payments AS (
 FROM payments p
 GROUP BY order_at_hour
 ORDER BY order_at_hour;
+
+-- Q5: total orders in Feb?
+SELECT
+    COUNT(DISTINCT order_id) AS order_count_feb
+FROM orders

@@ -115,6 +115,93 @@ GROUP BY pp.product_id, pp.name
 ORDER BY rev_in_feb DESC
 LIMIT 14; -- add limit 14 to see only the top contributors.
 
+-- in percentage (100%): but medium ice latte != large ice latte here.
+SELECT 
+    pp.product_id,
+    pp.name,
+    ROUND(
+        SUM(o.quantity * pp.price)*100.0/(
+            SELECT SUM(o.quantity * pp.price) AS feb_revenue
+            FROM orders o
+            JOIN products_n_prices pp ON o.product_id = pp.product_id
+        ),
+        2
+    ) AS rev_p_in_feb
+FROM orders o
+JOIN products_n_prices pp ON o.product_id = pp.product_id
+GROUP BY pp.product_id, pp.name
+ORDER BY rev_p_in_feb DESC;
+
+-- Q2-2/Q3-3-2 drink (flavor) regardless of size, but hot != cold.
+WITH revenue_per_product_id AS (
+    SELECT
+        pp.product_id,
+        pp.name,
+        SUM(o.quantity *pp.price) AS rev
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    WHERE pp.drink_id IS NOT NULL
+    GROUP BY 
+        pp.product_id,
+        pp.name
+    ORDER BY pp.product_id
+), rev_of_drinks AS (
+    SELECT
+        rppi.name,
+        -- MIN(rppi.product_id) AS prd_id,
+        SUM(rppi.rev) AS rev
+    FROM revenue_per_product_id rppi
+    GROUP BY rppi.name
+    -- ORDER BY prd_id
+)
+SELECT 
+    rod.name,
+    ROUND(
+        rod.rev*100.0/(
+            SELECT SUM(o.quantity * pp.price) AS feb_revenue
+            FROM orders o
+            JOIN products_n_prices pp ON o.product_id = pp.product_id
+        ),
+        2
+    ) AS rev_p_in_feb
+FROM rev_of_drinks rod
+ORDER BY rev_p_in_feb DESC;
+
+-- Q2-3: all food + drink: drink (flavor) regardless of size, but hot != cold.
+WITH revenue_per_product_id AS (
+    SELECT
+        pp.product_id,
+        pp.name,
+        SUM(o.quantity *pp.price) AS rev
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    -- WHERE pp.drink_id IS NOT NULL
+    GROUP BY 
+        pp.product_id,
+        pp.name
+    ORDER BY pp.product_id
+), rev_of_drinks AS (
+    SELECT
+        rppi.name,
+        -- MIN(rppi.product_id) AS prd_id,
+        SUM(rppi.rev) AS rev
+    FROM revenue_per_product_id rppi
+    GROUP BY rppi.name
+    -- ORDER BY prd_id
+)
+SELECT 
+    rod.name,
+    ROUND(
+        rod.rev*100.0/(
+            SELECT SUM(o.quantity * pp.price) AS feb_revenue
+            FROM orders o
+            JOIN products_n_prices pp ON o.product_id = pp.product_id
+        ),
+        2
+    ) AS rev_p_in_feb
+FROM rev_of_drinks rod
+ORDER BY rev_p_in_feb DESC;
+
 -- Q3: Which product categories generate the highest revenue?
 /*
     - what categories?
@@ -123,7 +210,7 @@ LIMIT 14; -- add limit 14 to see only the top contributors.
         - food vs drinks
         - drink flavor regardless of hot or cold or size
 */
--- hot vs iced?
+-- Q3-1 hot vs iced?
 WITH revenue_per_product AS (
     SELECT
         pp.product_id,
@@ -157,7 +244,7 @@ FROM labeled_drinks ld
 GROUP BY ld.category
 ORDER BY category_rev DESC;
 
--- coffee vs non-coffee?
+-- Q3-2 coffee vs non-coffee?
 WITH labeled_drinks AS (
     SELECT 
         pp.product_id,
@@ -178,7 +265,7 @@ JOIN labeled_drinks ld ON o.product_id = ld.product_id
 GROUP BY ld.category 
 ORDER BY category_rev DESC;
 
--- drink flavor regardless of hot or cold or size
+-- Q3-3 drink flavor regardless of hot or cold or size
 WITH revenue_per_drink_type AS (
     SELECT
         pp.drink_id,
@@ -198,7 +285,7 @@ FROM revenue_per_drink_type rpdt
 JOIN drink_types dt ON rpdt.drink_id = dt.drink_id
 ORDER BY rpdt.rev DESC;
 
--- food vs drinks?
+-- Q3-4 food vs drinks?
 WITH revenue_per_product AS (
     SELECT
         -- pp.product_id,
@@ -250,4 +337,22 @@ ORDER BY
 SELECT
 
 FROM orders o
-JOIN products_n_prices pp ON o.product_id = pp.product_id
+JOIN products_n_prices pp ON o.product_id = pp.product_id;
+
+-- Q5: aov
+WITH payments AS (
+    SELECT
+        o.order_id,
+        SUM(o.quantity * pp.price) AS bill
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    GROUP BY o.order_id
+)
+SELECT
+    ROUND(
+        SUM(bill)*1.0 / COUNT(order_id),
+        2
+    ) AS aov
+FROM payments;
+
+SELECT * FROM peak_hour_dim
