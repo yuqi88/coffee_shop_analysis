@@ -5,7 +5,7 @@
 During Feburary of 2026, the coffee shop generated $159,301.80 in total revenue across 6481 orders, resulting in an average order value (AOV) of $24.58. 
 ### 1.1 Revenue Distribution by Time Period
 #### Peak Hour Identification
-![traffic distirbution over time](asset/Traffic%20distribution%20over%20time.svg)
+![traffic distirbution over time](images/Traffic%20distribution%20over%20time.svg)
 To understand how revenue is distributed throughout the day, operating hours were segmented into peak and non-peak periods based on customer demand.
 
 Peak hours were identified by the least-squares method. Hours with observed order counts above the trendline were classified as peak periods, while all remaining hours were classified as non-peak periods. This approach identified 10 peak operating hours and 74 non-peak operating hours. Additionally, peak hours on weekends differ from weekdays according to the difference of traffic patterns.
