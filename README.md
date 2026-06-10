@@ -73,6 +73,15 @@ In contrast, delivery channels become the dominant purchasing method during midd
 
 This shift highlights distinct customer purchasing behaviors throughout the day, with in-store demand concentrated during morning beverage purchases and delivery demand peaking around lunchtime.
 ### 1.4 Key Findings
+The sales and revenue analysis reveals three key patterns in business performance.
+
+First, revenue generation is highly concentrated within a small number of peak operating hours. Although peak periods account for only 12% of operating hours, they generate approximately 84% of total revenue, making them the primary driver of overall business performance.
+
+Second, revenue is concentrated among a relatively small group of beverage offerings. The top-performing products account for a substantial share of total revenue, while most menu items individually contribute less than 1%, indicating a long-tail product distribution.
+
+Finally, customers utilize both delivery and non-delivery channels extensively, with purchasing preferences varying throughout the day. Non-delivery channels dominate during morning hours, while delivery services become the primary purchasing method during lunchtime periods.
+
+While these findings explain where and when revenue is generated, they do not explain how customers purchase products. The next section uses market basket analysis to examine purchasing patterns, product relationships, and basket composition to better understand the customer behaviors driving these revenue outcomes.
 
 ## 2. Market Basket Analysis
 ### 2.1 Basket Structure
