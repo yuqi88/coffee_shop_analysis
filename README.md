@@ -1,5 +1,3 @@
-# Executive Summary
-# Objective & Scope/Business Overview & Objective
 # Findings & Visualizations
 ## 1. Sales & Revenue Performance
 During Feburary of 2026, the coffee shop generated $159,301.80 in total revenue across 6481 orders, resulting in an average order value (AOV) of $24.58. 
@@ -84,34 +82,3 @@ This shift highlights distinct customer purchasing behaviors throughout the day,
 ### 2.5 Light Customer Segmenation
 ### 2.6 Key Findings
 
-
-
-
-# Conclusions from the findings (Analysis & Interpretation)
-# Recommendations
-# Limitations & Assumptions
-### Future Enhancements
-Include the logging of shipment time and customer satifiction survey.
-
-# Appendix (optional)
-
----
-### 1. Peak Hours
-This analysis examines hourly order patterns to identify peak demand periods.
-
-- Weekdays show peaks at 8–9 AM, 11 AM–12 PM, and 4–5 PM  
-- Weekends shift later to 10–11 AM and 2–3 PM  
-- Valentine’s weekend shows a significant uplift across all peak hours  
-
-Analysis of hourly order patterns shows clear and consistent demand cycles across weekdays, weekends, and seasonal events.
-
-- Weekdays exhibit three distinct peaks:
-    - Morning: 8–9 AM 
-    - Lunch: 11 AM–12 PM
-    - Late afternoon: 4–5 PM
-- Weekends shift to later hours:
-    - Late morning: 10–11 AM
-    - Afternoon: 2–3 PM
-- Valentine’s weekend shows a significant uplift in demand across all peak periods, indicating strong seasonal influence on customer behavior.
-
-which may correspond to typical commuting, lunch, and post-work periods
