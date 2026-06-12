@@ -44,4 +44,20 @@ Items per order
 Food add-on ratio
 Product pair frequency
 Average order value by basket type
+
+
+
+Questions to Answer
+Revenue Growth
+- Where are upsell opportunities weak?
+- Which periods need promotions?
+Operations
+- Which products require better stocking?
+- Which periods need staffing adjustments?
+Marketing
+- Which bundles should be promoted?
+- Which products deserve cross-selling?
+Customer Experience
+- Which channels behave differently?
+- Which customer behaviors should be encouraged?
 */
