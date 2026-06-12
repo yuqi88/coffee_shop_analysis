@@ -1,4 +1,4 @@
-# Findings & Visualizations
+# The Analysis
 ## 1. Sales & Revenue Performance
 During Feburary of 2026, the coffee shop generated $159,301.80 in total revenue across 6481 orders, resulting in an average order value (AOV) of $24.58. 
 ### 1.1 Revenue Distribution by Time Period
@@ -85,9 +85,63 @@ While these findings explain where and when revenue is generated, they do not ex
 
 ## 2. Market Basket Analysis
 ### 2.1 Basket Structure
+1. What is average basket size? 4.97
+2. Single-item vs multi-item orders?
+
+| Basket Type | Orders |
+| ----------- | ------ | 
+| Single-item | 91.96% | 
+| Multi-item  | 8.04%  |  
+
 ### 2.2 Basket Size Contribution
+Do larger baskets contribute disproportionately to revenue?
+| Basket Size | Revenue Share |
+| ----------- | ------------- |
+| 1 item      | 1.67%         |
+| 2 items     | 4.55%         |
+| 3+ items    | 93.78%        |
+
+Now you understand whether growth comes from:
+
+- More customers
+- Larger baskets
+This is valuable.
+
 ### 2.3 Product Affinity Analysis
+To understand how products are purchased together within a single transaction, an association rule analysis was conducted using support, confidence, and lift metrics.
+
+#### Top Product Associations
+
+| Antecedent      | Consequent          | Support (%) | Confidence (%) | Lift |
+| --------------- | ------------------- | ----------: | -------------: | ---: |
+| Americano       | Brewed Coffee       |        1.68 |          16.22 | 9.65 |
+| Americano Misto | Brewed Coffee       |        2.79 |          14.40 | 5.16 |
+| Brewed Coffee   | Strawberry Lemonade |        2.05 |           9.55 | 4.66 |
+| Brewed Coffee   | Iced Matcha Latte   |        1.90 |           8.83 | 4.65 |
+| Brewed Coffee   | Latte               |        1.76 |           8.18 | 4.65 |
+| Americano Misto | Strawberry Lemonade |        1.70 |           8.75 | 5.15 |
+| Americano Misto | Iced Americano      |        1.68 |           8.67 | 5.16 |
+| Americano Misto | Iced White Mocha    |        1.56 |           8.04 | 5.15 |
+| Americano Misto | Iced Chocolate      |        1.54 |           7.96 | 5.17 |
+| Brewed Coffee   | Iced Latte          |        1.53 |           7.11 | 4.65 |
+
+#### Key Patterns
+
+The results show strong evidence of **structured product affinity around a small set of core beverages**, particularly Americano, Americano Misto, and Brewed Coffee. These items act as “anchor products,” frequently appearing in association with a wide range of secondary beverages.
+
+Across all rules, lift values are consistently above 4, with some associations reaching above 9. This indicates that these product pairings occur significantly more often than would be expected under independent purchasing behavior, confirming the presence of meaningful cross-product relationships.
+
+A second clear pattern is the clustering of beverage-to-beverage combinations rather than cross-category bundling. Core coffee products are commonly associated with iced espresso variations and flavored drinks such as Strawberry Lemonade, Latte, and Matcha-based beverages. This suggests that customers tend to diversify drink types within a single order rather than combining drinks with food items.
+
+Overall, the analysis indicates that customer purchasing behavior is driven by a small number of high-affinity anchor products, with consistently strong associative relationships across beverage categories. These insights provide opportunities for targeted bundling and recommendation strategies, particularly around Americano- and Brewed Coffee-based products.
+
+
 ### 2.4 Cross-Sell Opportunity
+Which products have strong attachment behavior?
+Which high-volume products have weak attachment rates?
 ### 2.5 Light Customer Segmenation
 ### 2.6 Key Findings
 
+# Limitations & Assumptions
+### Future Enhancements
+Include the logging of shipment time and customer satisfaction survey.
