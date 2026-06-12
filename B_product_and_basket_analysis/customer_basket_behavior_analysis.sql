@@ -203,7 +203,7 @@ FROM avg_basket_sizes
 GROUP BY hr
 ORDER BY hr;
 
--- Q5: Do a relatively small number of large baskets generate a disproportionately large share of revenue? (business value of large orders)
+-- Q?: Do a relatively small number of large baskets generate a disproportionately large share of revenue? (business value of large orders)
 /*
 
     - separate hour and weekday and weekday
@@ -212,3 +212,38 @@ ORDER BY hr;
     - orders
         1. MIN(o.ordered_at)
 */
+
+-- Q5: Do larger baskets contribute disproportionately to revenue?
+/*
+    - orders & revenue
+    | Basket Size | Revenue Share |
+    | ----------- | ------------- |
+    | 1 item      | 40%           |
+    | 2 items     | 35%           |
+    | 3+ items    | 25%           |
+*/
+WITH orders_n_count AS (
+    SELECT
+        MIN(o.order_id) AS order_id,
+        SUM(o.quantity * pp.price) AS bill,
+        SUM(o.quantity) AS item_count
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    GROUP BY o.order_id
+)
+SELECT
+    CASE
+        WHEN item_count = 1 THEN '1 item'
+        WHEN item_count = 2 THEN '2 items'
+        WHEN item_count > 2 THEN '3+ items'
+        ELSE '-1'
+    END AS basket_size,
+    ROUND(
+        SUM(bill)*100.0/
+            (SELECT SUM(o.quantity * pp.price) FROM orders o JOIN products_n_prices pp ON o.product_id = pp.product_id )
+        , 2
+    ) AS revenue_share
+FROM orders_n_count onc
+GROUP BY basket_size
+ORDER BY basket_size;
+
