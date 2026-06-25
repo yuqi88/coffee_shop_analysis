@@ -85,20 +85,20 @@ While these findings explain where and when revenue is generated, they do not ex
 
 ## 2. Market Basket Analysis
 ## 2.1 Basket Structure
-1. What is average basket size? 4.97
-2. Single-item vs multi-item orders?
+To understand customer purchasing behavior, I analyzed transaction baskets by size and product composition.
 
-| Basket Type | Orders |
-| ----------- | -----: | 
-| Single-item | 91.96% | 
-| Multi-item  | 8.04%  |  
+| Basket Composition (size) | Orders |
+| ------------------------- | -----: | 
+| Single-item               | 8.04%  | 
+| Multi-item                | 91.96% |
 
-| Basket Type  | Orders | % of Orders |
-| ------------ | -----: | ----------: |
-| Drink Only   |      X |          X% |
-| Food Only    |      X |          X% |
-| Food + Drink |      X |          X% |
+![Basket Composition by product](images/Basket%20Composition.svg)
 
+### Insights:
+**Beverages Drive Traffic**: Beverages appear in 96% of all transactions, which drive the vast majority of orders. Food-only purchases are rare (4%), suggesting that customers view the brand primarily as a beverage destination rather than a dining option.  
+**Multi-Item Dominance**: Customers rarely purchase a single product, with roughly 92% of orders consisting of multiple items. Combined with an average basket size of 4.79 items, this indicates strong product attachment and multi-item ordering habits per visit.
+
+Overall, the results suggest that customers typically purchase multiple products per transaction, with beverages serving as the foundation of most baskets. This purchasing behavior creates opportunities to further increase basket value through product recommendations and food attachment strategies.
 
 ## 2.2 Basket Size Contribution
 Do larger baskets contribute disproportionately to revenue?
