@@ -29,7 +29,7 @@ These findings indicate that overall business performance is heavily dependent o
 ### 1.2 Product Revenue Contribution
 To understand which menu items drive overall business performance, revenue contribution was analyzed at the product level.
 
-|  | Product               | Revenue Contribution |
+|            | Product               | Revenue Contribution |
 |------------| --------------------- | -------------------- |
 | 1          | Americano Misto       | 10.72%               |
 | 2          | Strawberry Lemonade   | 9.28%               |
@@ -84,19 +84,26 @@ Finally, customers utilize both delivery and non-delivery channels extensively, 
 While these findings explain where and when revenue is generated, they do not explain how customers purchase products. The next section uses market basket analysis to examine purchasing patterns, product relationships, and basket composition to better understand the customer behaviors driving these revenue outcomes.
 
 ## 2. Market Basket Analysis
-### 2.1 Basket Structure
+## 2.1 Basket Structure
 1. What is average basket size? 4.97
 2. Single-item vs multi-item orders?
 
 | Basket Type | Orders |
-| ----------- | ------ | 
+| ----------- | -----: | 
 | Single-item | 91.96% | 
 | Multi-item  | 8.04%  |  
 
-### 2.2 Basket Size Contribution
+| Basket Type  | Orders | % of Orders |
+| ------------ | -----: | ----------: |
+| Drink Only   |      X |          X% |
+| Food Only    |      X |          X% |
+| Food + Drink |      X |          X% |
+
+
+## 2.2 Basket Size Contribution
 Do larger baskets contribute disproportionately to revenue?
 | Basket Size | Revenue Share |
-| ----------- | ------------- |
+| ----------- | ------------: |
 | 1 item      | 1.67%         |
 | 2 items     | 4.55%         |
 | 3+ items    | 93.78%        |
@@ -107,7 +114,7 @@ Now you understand whether growth comes from:
 - Larger baskets
 This is valuable.
 
-### 2.3 Product Affinity Analysis
+## 2.3 Product Affinity Analysis
 To understand how products are purchased together within a single transaction, an association rule analysis was conducted using support, confidence, and lift metrics.
 
 #### Top Product Associations
@@ -136,12 +143,47 @@ A second clear pattern is the clustering of beverage-to-beverage combinations ra
 Overall, the analysis indicates that customer purchasing behavior is driven by a small number of high-affinity anchor products, with consistently strong associative relationships across beverage categories. These insights provide opportunities for targeted bundling and recommendation strategies, particularly around Americano- and Brewed Coffee-based products.
 
 
-### 2.4 Cross-Sell Opportunity
-Which products have strong attachment behavior?
-Which high-volume products have weak attachment rates?
-### 2.5 Light Customer Segmenation
-### 2.6 Key Findings
+## 2.4 Cross-Sell Opportunity
+### Overview
+Add-on analysis was conducted to understand how frequently customers enhance their primary beverage purchases with additional food items, and which conditions are most associated with higher basket expansion.
 
+| Metric              | Value  |
+| ------------------- | -----: |
+| Drink Orders        | 6,221  |
+| Drink + Food Orders | 1,036  |
+| Food Attach Rate    | 16.65% |
+
+Overall, 16.65% of drink orders include at least one food item, indicating more than 80% of the beverage customers do not extend their purchase beyond drinks alone. This suggests a significant opportunity for improving cross-selling performance.
+
+### Upselling Opportunities
+To identify upselling opportunities, food attachment rates across different drink categories were analyzed.
+
+Although several beverages exhibit higher attachment rates, many of these products have relatively low order volumes and therefore present limited business impact. For example, Matcha Latte with food attachment rate at a higher 26%, but it only has a 56 order volume.
+
+|            | Drink Category      | Food Attachment Rate | Order Volume |
+|------------| ------------------- | -------------------: | -----------: |
+|          1 | Brewed Coffee       |                  16% |        1,393 |
+|          2 | Americano Misto     |                  13% |        1,257 |
+|          3 | Strawberry Lemonade |                  15% |        1,030 |
+|          4 | Caramel Macchiato   |                  15% |          702 |
+|          5 | Iced Chocolate      |                  14% |          669 |
+|          6 | Iced Matcha Latte   |                  13% |          718 |
+|          7 | Americano           |                  13% |          672 |
+|          8 | Latte               |                  12% |          704 |
+|          9 | Iced Americano      |                  12% |          696 |
+|         10 | Iced Latte          |                  12% |          636 |
+|         11 | Iced White Mocha    |                  11% |          651 |
+
+
+In contrast, the beverages above consist of both strong food attachment rate and substantial transaction volume, serving as the top 11 impactful drinks to food sales.
+
+### Key Insights
+
+This analysis reveals that the top 11 food-sales driving beverages generate at least one food purchase is made every 4 to 5 orders. Additionally, these drinks are also the same as the top 11 revenue contributors from [1.2 Product Revenue Contribution](#1.2-Product-Revenue-Contribution).
+
+These findings suggest that cross-selling initiatives should focus the top 11 impactful drinks to food sales in the above table. Product recommendations, bundle promotions, and checkout prompts centered around these beverages are likely to provide the greatest opportunity for increasing basket size and revenue.
+
+## 2.5 Key Findings
 # Limitations & Assumptions
 ### Future Enhancements
 Include the logging of shipment time and customer satisfaction survey.

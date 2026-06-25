@@ -7,6 +7,8 @@ Customer Basket Behavior Analysis — Core Questions
 3. How does basket size vary by time period? (morning vs afternoon vs evening)
 4. How does basket behavior vary by channel? (delivery vs in-store)
 5. Do a relatively small number of large baskets generate a disproportionately large share of revenue? (business value of large orders)
+6. Basket structure:
+    - classify orders into Food-only / Drink-only / Food+Drink types of basket.
 
 2*
 | Basket Type | % of Orders |
@@ -28,8 +30,8 @@ FROM orders o
 /*
     | Basket Type | % of Orders |
     | ----------- | ----------- |
-    | Single-item | 72%         |
-    | Multi-item  | 28%         |
+    | Single-item | 8.04%       |
+    | Multi-item  | 91.96%      |
 */
 WITH basket_types AS (
     SELECT
@@ -246,4 +248,40 @@ SELECT
 FROM orders_n_count onc
 GROUP BY basket_size
 ORDER BY basket_size;
+
+-- Q6: classify orders into Food-only / Drink-only / Food+Drink types of basket.
+/*
+    - orders
+    - products_n_prices
+
+| Basket Type  | Orders | % of Orders |
+| ------------ | -----: | ----------: |
+| Drink Only   |      X |          X% |
+| Food Only    |      X |          X% |
+| Food + Drink |      X |          X% |
+
+| Metric              | Value  |
+| ------------------- | -----: |
+| Drink Orders        | 6,221  |
+| Drink + Food Orders | 1,036  |
+| Food Attach Rate    | 16.65% |
+*/
+
+WITH labelled_orders AS (
+    SELECT
+        o.order_id,
+        MAX(CASE WHEN pp.drink_id IS NOT NULL THEN 1 ELSE 0 END) AS has_drink,
+        MAX(CASE WHEN pp.food_id IS NOT NULL THEN 1 ELSE 0 END) AS has_food
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    GROUP BY o.order_id
+)
+SELECT 
+    COUNT(*) FILTER (WHERE has_drink = 1 AND has_food = 0) AS drink_only,
+    COUNT(*) FILTER (WHERE has_drink = 0 AND has_food = 1) AS food_only,   
+    COUNT(*) FILTER (WHERE has_drink = 1 AND has_food = 1) AS drink_n_food 
+FROM labelled_orders;
+
+SELECT COUNT(DISTINCT o.order_id)
+FROM orders o; -- total order count: 6481
 
