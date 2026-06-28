@@ -60,4 +60,88 @@ Marketing
 Customer Experience
 - Which channels behave differently?
 - Which customer behaviors should be encouraged?
+
+
+
+3. Product Performance Analysis
+
+(Now move into products)
+
+Purpose:
+
+Understand WHICH products drive business performance.
+
+Main Questions
+Product Revenue
+Top revenue-generating products
+Top-selling products by quantity
+High-frequency vs high-revenue products
+Category Performance
+Which categories sell most?
+Beverage vs food contribution
+Category performance by time period
+Time/Product Relationships
+Best-selling morning products
+Best-selling afternoon products
+
+5. Strategic Recommendation Layer
+
+(Final business layer)
+
+Purpose:
+
+Turn findings into actions.
+
+Questions to Answer
+Revenue Growth
+Where are upsell opportunities weak?
+Which periods need promotions?
+Operations
+Which products require better stocking?
+Which periods need staffing adjustments?
+Marketing
+Which bundles should be promoted?
+Which products deserve cross-selling?
+Customer Experience
+Which channels behave differently?
+Which customer behaviors should be encouraged?
+
+
+How This Prevents Duplicate Analysis
+
+A common beginner mistake is:
+
+Analyze products
+→ analyze products again by time
+→ analyze products again by basket
+→ analyze products again by channel
+
+This creates repetition.
+
+Better Analyst Workflow
+
+Instead:
+
+Step 1
+
+Define:
+
+time periods
+channels
+peak hours
+Step 2
+
+Analyze:
+
+overall customer ordering behavior
+Step 3
+
+Analyze:
+
+product performance within those contexts
+Step 4
+
+Analyze:
+
+relationships between products
 */
