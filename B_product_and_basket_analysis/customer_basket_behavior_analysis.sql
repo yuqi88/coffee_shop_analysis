@@ -51,7 +51,7 @@ SELECT
         2
     ) AS p_of_orders
 FROM basket_types bt
-GROUP BY bt.basket_type
+GROUP BY bt.basket_type;
 
 
 -- Q3: How does basket size vary by time period? (morning vs afternoon vs evening)
@@ -248,6 +248,47 @@ SELECT
 FROM orders_n_count onc
 GROUP BY basket_size
 ORDER BY basket_size;
+
+-- Q5-2: Do larger baskets contribute disproportionately to revenue?
+/*
+    - orders & revenue
+    | Basket Size | % Orders | % Revenue |
+    | ----------- | -------: | --------: |
+    | 1 Item      |      ... |       ... |
+    | 2 Items     |      ... |       ... |
+    | 3+ Items    |      ... |       ... |
+*/
+WITH orders_n_count AS (
+    SELECT
+        MIN(o.order_id) AS order_id,
+        SUM(o.quantity * pp.price) AS bill,
+        SUM(o.quantity) AS item_count
+    FROM orders o
+    JOIN products_n_prices pp ON o.product_id = pp.product_id
+    GROUP BY o.order_id
+)
+SELECT
+    CASE
+        WHEN item_count = 1 THEN '1 item'
+        WHEN item_count = 2 THEN '2 items'
+        WHEN item_count > 2 THEN '3+ items'
+        ELSE '-1'
+    END AS basket_size,
+    ROUND(
+        COUNT(*)*100/
+            (SELECT COUNT(DISTINCT order_id) FROM orders)
+        ,2
+    ) AS percent_of_orders,
+    ROUND(
+        SUM(bill)*100.0/
+            (SELECT SUM(o.quantity * pp.price) FROM orders o JOIN products_n_prices pp ON o.product_id = pp.product_id )
+        , 2
+    ) AS revenue_share
+FROM orders_n_count onc
+GROUP BY basket_size
+ORDER BY basket_size;
+
+
 
 -- Q6: classify orders into Food-only / Drink-only / Food+Drink types of basket.
 /*
