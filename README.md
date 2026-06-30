@@ -1,17 +1,6 @@
-# The Analysis
+# The Analysis:
 
-<details>
-<summary><b>Click To See Catalog</b></summary>
 
-```text
-.
-├── src/
-│   ├── components/
-│   └── index.js
-├── public/
-│   └── index.html
-└── package.json
-```
 [1 Sales & Revenue Performance](#1-sales--revenue-performance)  
 [1.1 Revenue Distribution by Time Period](#11-revenue-distribution-by-time-period)  
 [1.2 Product Revenue Contribution](#12-product-revenue-contribution)  
@@ -24,14 +13,15 @@
 [2.2 Product Performance](#21-product-performance)  
 [2.3 Product Affinity Analysis](#23-product-affinity-analysis)  
 [2.4 Cross-Sell Opportunity](#24-cross-sell-opportunity)  
-</details>
 
-## 1. Sales & Revenue Performance
+# 1. Sales & Revenue Performance
 During Feburary of 2026, the coffee shop generated $159,301.80 in total revenue across 6481 orders, resulting in an average order value (AOV) of $24.58. 
-### 1.1 Revenue Distribution by Time Period
-#### Peak Hour Identification
-![traffic distirbution over time](images/Traffic%20distribution%20over%20time.svg)
+## 1.1 Revenue Distribution by Time Period
+### 1.1.1 Peak Hour Identification
 To understand how revenue is distributed throughout the day, operating hours were segmented into peak and non-peak periods based on customer demand.
+
+![traffic distirbution over time](images/Traffic%20distribution%20over%20time.svg)
+
 
 Peak hours were identified by the least-squares method. Hours with observed order counts above the trendline were classified as peak periods, while all remaining hours were classified as non-peak periods. This approach identified 10 peak operating hours and 74 non-peak operating hours. Additionally, peak hours on weekends differ from weekdays according to the difference of traffic patterns.
 
@@ -39,9 +29,7 @@ Therefore, the peak hours are
 - Weekday 08 - 09, 11 - 12, 16 - 17
 - Weekend 10 - 11, 14 - 15
 
-Figure X illustrates the hourly order distribution and the trendline used to classify peak and non-peak periods.
-
-#### Revenue By Time
+### 1.1.2 Revenue By Time
 To understand when revenue is generated, sales performance was analyzed across peak and non-peak periods.
 
 | Period   | Revenue     | Hours | Revenue per Hour |
@@ -49,11 +37,13 @@ To understand when revenue is generated, sales performance was analyzed across p
 | Non-Peak | $24,734.55  | 74    | $334.25          |
 | Peak     | $134,567.25 | 10    | $13,456.73       |
 
-The results show a substantial concentration of revenue during peak periods. Although peak hours accounted for only 10 of 84 operating hours (12%), they generated approximately 84% of total revenue. Revenue efficiency was also significantly higher during peak periods, producing over 40 times more revenue per hour than non-peak periods.
+### Insights:
+
+**Concentrated Revenue During Peak**: Although peak hours accounted for only 12% of the operating hours, they generated ~84% of total revenue. Revenue efficiency was also significantly higher during peak periods, producing over 40 times more revenue per hour than non-peak periods.
 
 These findings indicate that overall business performance is heavily dependent on a small number of high-demand operating hours.
 
-### 1.2 Product Revenue Contribution
+## 1.2 Product Revenue Contribution
 To understand which menu items drive overall business performance, revenue contribution was analyzed at the product level.
 
 |            | Product               | Revenue Contribution |
@@ -81,8 +71,8 @@ These 11 products collectively account for approximately 78% of total revenue, d
 
 Beyond the top group, remaining products contribute less than 2% each individually, forming a classic long-tail distribution. While individual tail products have a low relative impact, they collectively contribute nearly a quarter of total revenue, showing that menu variety plays a crucial role in supporting our core daily drivers.
 
-### 1.3 Channel / Category Performance
-#### 1.3.1 Revenue Contribution by Channel Category
+## 1.3 Channel / Category Performance
+### 1.3.1 Revenue Contribution by Channel Category
 To understand how customers access the business, revenue was analyzed across delivery and non-delivery channels.
 
 | Channel Category | Revenue | Revenue Share |
@@ -93,13 +83,13 @@ To understand how customers access the business, revenue was analyzed across del
 While non-delivery transactions remain the primary revenue source, delivery channels contribute a substantial portion of total revenue, accounting for nearly 44% of sales.
 
 This indicates that revenue generation is not solely dependent on in-store traffic. Delivery platforms represent an important sales channel and significantly expand customer reach beyond physical store visits.
-#### 1.3.2 Channel Preference by Time of Day
+### 1.3.2 Channel Preference by Time of Day
 Channel usage varies significantly throughout the day. During morning hours (7 AM–10 AM), non-delivery purchases account for approximately two-thirds of transactions, indicating that customers primarily visit the store or use store pickup services.
 
 In contrast, delivery channels become the dominant purchasing method during midday hours. Between 11 AM and 1 PM, delivery transactions account for approximately 68%–76% of orders, suggesting that customers increasingly rely on delivery services during lunch periods.
 
 This shift highlights distinct customer purchasing behaviors throughout the day, with in-store demand concentrated during morning beverage purchases and delivery demand peaking around lunchtime.
-### 1.4 Key Findings
+## 1.4 Key Findings
 The sales and revenue analysis reveals three key patterns in business performance.
 
 First, revenue generation is highly concentrated within a small number of peak operating hours. Although peak periods account for only 12% of operating hours, they generate approximately 84% of total revenue, making them the primary driver of overall business performance.
