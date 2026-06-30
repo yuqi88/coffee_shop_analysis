@@ -184,7 +184,18 @@ This analysis reveals that the top 11 food-driving beverages generate at least o
 
 These findings suggest that cross-selling initiatives should focus the top 11 impactful drinks to food sales in the above table. Product recommendations, bundle promotions, and checkout prompts centered around these beverages are likely to provide the greatest opportunity for increasing basket size and revenue.
 
-## 2.4 Key Findings
+## 2.4 Market Basket Analysis Summary
+
+The market basket analysis reveals that customer purchasing behavior is characterized by large, beverage-centered transactions. Multi-item purchases account for approximately 92% of all orders, with an average basket size of nearly five items, indicating that customers frequently purchase multiple products within a single visit.
+
+Beverages serve as the primary basket anchor, appearing in the majority of transactions and forming the foundation of most product combinations. Association rule analysis further identified strong relationships among core beverages such as Brewed Coffee, Americano Misto, and Americano, demonstrating that customer purchasing patterns are not random but instead follow consistent product affinity structures.
+
+The analysis also shows that revenue is heavily concentrated among larger baskets. While baskets containing three or more items represent 81% of transactions, they generate nearly 94% of total revenue, highlighting the significant business value of basket-building behavior.
+
+Finally, food attachment analysis identified several high-volume beverages—including Brewed Coffee, Americano Misto, Strawberry Lemonade, Iced Americano, and Latte—as effective cross-sell anchors due to their combination of strong food attachment rates and substantial transaction volume.
+
+Overall, the findings suggest that revenue growth opportunities are best pursued through beverage-led cross-selling and food attachment strategies. By leveraging high-volume anchor products and existing purchasing patterns, the coffee shop can further increase basket size and maximize revenue from already established customer behaviors.
+
 # Limitations & Assumptions
 ### Future Enhancements
 Include the logging of shipment time and customer satisfaction survey.
